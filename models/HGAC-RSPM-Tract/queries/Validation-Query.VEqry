@@ -1,0 +1,567 @@
+QuerySpecx <- list(
+  #-----------------------------------------
+  #Population, Income, and Per Capita Income
+  #-----------------------------------------
+
+  #Population
+  list(
+    Name = "Population",
+    Summarize = list(
+      Expr = "sum(HhSize)",
+      Units = c(
+        HhSize = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Total population"
+  ),
+
+  #Income
+  list(
+    Name = "Income",
+    Summarize = list(
+      Expr = "sum(Income)",
+      Units = c(
+        Income = "USD"
+      ),
+      Table = "Household"
+    ),
+    Units = paste("BaseYear dollars per year"),
+    Description = "Total personal income"
+  ),
+  #Per Capita Income
+  list(
+    Name = "PerCapInc",
+    Function = "Income / Population",
+    Units = paste("BaseYear dollars per person per year"),
+    Description = "Average per capita income"
+  ),
+
+  #----
+  #DVMT
+  #----
+  #Household DVMT
+  list(
+    Name = "HouseholdDvmt",
+    Summarize = list(
+      Expr = "sum(Dvmt)",
+      Units = c(
+        Dvmt = "MI/DAY"
+      ),
+      Table = "Household"
+    ),
+    Units = "miles per day",
+    Description = "Total DVMT (in owned and car service vehicles) of persons in households and non-institutional group quarters"
+  ),
+  #Household Car Service DVMT
+  list(
+    Name = "HouseholdCarSvcDvmt",
+    Summarize = list(
+      Expr = "sum(Dvmt[VehicleAccess != 'Own'] * DvmtProp[VehicleAccess != 'Own'])",
+      Units = c(
+        Dvmt = "MI/DAY",
+        DvmtProp = "",
+        VehicleAccess = ""
+      ),
+      Table = list(
+        Household = c("Dvmt"),
+        Vehicle = c("DvmtProp", "VehicleAccess")
+      ),
+      Key = "HhId"
+    ),
+    Units = "miles per day",
+    Description = "Total DVMT in car service vehicles of persons in households and non-institutional group quarters"
+  ),
+  #Commercial Service DVMT
+  list(
+    Name = "ComSvcDvmt",
+    Summarize = list(
+      Expr = "sum(ComSvcUrbanDvmt) + sum(ComSvcTownDvmt) + sum(ComSvcRuralDvmt)",
+      Units = c(
+        ComSvcUrbanDvmt = "MI/DAY",
+        ComSvcTownDvmt = "MI/DAY",
+        ComSvcRuralDvmt = "MI/DAY"
+      ),
+      Table = "Marea"
+    ),
+    Units = "miles per day",
+    Description = "Total DVMT of commercial service vehicles"
+  ),
+  #Public Transit Van DVMT
+  list(
+    Name = "PTVanDvmt",
+    Summarize = list(
+      Expr = "sum(VanDvmt)",
+      Units = c(
+        VanDvmt = "MI/DAY"
+      ),
+      Table = "Marea"
+    ),
+    Units = "miles per day",
+    Description = "Total DVMT of public transit vans"
+  ),
+  #Light-duty Vehicle DVMT
+  list(
+    Name = "LdvDvmt",
+    Function = "HouseholdDvmt + ComSvcDvmt + PTVanDvmt",
+    Units = "miles per day",
+    Description = "Total DVMT of household vehicles, commercial service vehicles, and public transit vans"
+  ),
+  #Heavy truck DVMT
+  list(
+    Name = "HvyTruckDvmt",
+    Summarize = list(
+      Expr = "sum(HvyTrkUrbanDvmt) + sum(HvyTrkNonUrbanDvmt)",
+      Units = c(
+        HvyTrkUrbanDvmt = "MI/DAY",
+        HvyTrkNonUrbanDvmt = "MI/DAY"
+      ),
+      Table = "Region"
+    ),
+    Units = "miles per day",
+    Description = "Total DVMT of heavy trucks"
+  ),
+  #Bus DVMT
+  list(
+    Name = "BusDvmt",
+    Summarize = list(
+      Expr = "sum(BusDvmt)",
+      Units = c(
+        BusDvmt = "MI/DAY"
+      ),
+      Table = "Marea"
+    ),
+    Units = "miles per day",
+    Description = "Total DVMT of public transit busses"
+  ),
+  #Heavy duty vehicle DVMT
+  list(
+    Name = "HdvDvmt",
+    Function = "HvyTruckDvmt + BusDvmt",
+    Units = "miles per day",
+    Description = "Total DVMT of heavy trucks and public transit busses"
+  ),
+  #Total DVMT
+  list(
+    Name = "TotalDvmt",
+    Function = "LdvDvmt + HdvDvmt",
+    Units = "miles per day",
+    Description = "Total DVMT of light-duty vehicles and heavy duty vehicles"
+  ),
+
+  #----------------
+  #Gasoline Gallons
+  #----------------
+  #Household daily GGE
+  list(
+    Name = "HouseholdGGE",
+    Summarize = list(
+      Expr = "sum(DailyGGE)",
+      Units = c(
+        DailyGGE = "GGE/DAY"
+      ),
+      Table = "Household"
+    ),
+    Units = "gallons per day",
+    Description = "Total gasoline consumed by household vehicles"
+  ),
+  #Commercial Service Vehicle GGE
+  list(
+    Name = "ComSvcGGE",
+    Summarize = list(
+      Expr = "sum(ComSvcNonUrbanGGE) + sum(ComSvcUrbanGGE)",
+      Units = c(
+        ComSvcNonUrbanGGE = "GGE/DAY",
+        ComSvcUrbanGGE = "GGE/DAY"
+      ),
+      Table = "Marea"
+    ),
+    Units = "gallons per day",
+    Description = "Total gasoline consumed by commercial service vehicles"
+  ),
+  #Public Transit Van GGE
+  list(
+    Name = "PTVanGGE",
+    Summarize = list(
+      Expr = "sum(VanGGE)",
+      Units = c(
+        VanGGE = "GGE/DAY"
+      ),
+      Table = "Marea"
+    ),
+    Units = "gallons per day",
+    Description = "Total gasoline consumed by public transit vans"
+  ),
+  #Bus GGE
+  list(
+    Name = "BusGGE",
+    Summarize = list(
+      Expr = "sum(BusGGE)",
+      Units = c(
+        BusGGE = "GGE/DAY"
+      ),
+      Table = "Marea"
+    ),
+    Units = "gallons per day",
+    Description = "Total gasoline consumed by public transit busses"
+  ),
+  #Total GGE
+  list(
+    Name = "TotalGGE",
+    Function = "HouseholdGGE + ComSvcGGE + PTVanGGE + BusGGE",
+    Units = "gallons per day",
+    Description = "Total gasoline consumed by light and heavy duty vehicles"
+  ),
+
+  #-------------------
+  #Light-Duty Vehicles
+  #-------------------
+  list(
+    Name = "NumHouseholdVehicles",
+    Summarize = list(
+      Expr = "sum(NumAuto) + sum(NumLtTrk)",
+      Units =  c(
+        NumAuto = "VEH",
+        NumLtTrk = "VEH"
+      ),
+      Table = "Household"
+    ),
+    Units = "vehicles",
+    Description = "Number of vehicles owned or leased by households"
+  ),
+
+  #----------
+  #Population
+  #----------
+  list(
+    Name = "Age0to14",
+    Summarize = list(
+      Expr = "sum(Age0to14)",
+      Units = c(
+        Age0to14 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of persons age 0 to 14"
+  ),
+
+  #--------------
+  #Age Categories
+  #--------------
+
+  list(
+    Name = "Age15to19",
+    Summarize = list(
+      Expr = "sum(Age15to19)",
+      Units = c(
+        Age15to19 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of persons age 15 to 19"
+  ),
+  list(
+    Name = "Age20to29",
+    Summarize = list(
+      Expr = "sum(Age20to29)",
+      Units = c(
+        Age20to29 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of persons age 20 to 29"
+  ),
+  list(
+    Name = "Age30to54",
+    Summarize = list(
+      Expr = "sum(Age30to54)",
+      Units = c(
+        Age30to54 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of persons age 30 to 54"
+  ),
+  list(
+    Name = "Age55to64",
+    Summarize = list(
+      Expr = "sum(Age55to64)",
+      Units = c(
+        Age55to64 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of persons age 55 to 64"
+  ),
+  list(
+    Name = "Age65Plus",
+    Summarize = list(
+      Expr = "sum(Age65Plus)",
+      Units = c(
+        Age65Plus = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of persons age 65 and older"
+  ),
+  list(
+    Name = "TotalPopulation",
+    Summarize = list(
+      Expr = "sum(HhSize)",
+      Units = c(
+        HhSize = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of persons"
+  ),
+
+  #-------
+  #Drivers
+  #-------
+  list(
+    Name = "Drv15to19",
+    Summarize = list(
+      Expr = "sum(Drv15to19)",
+      Units = c(
+        Drv15to19 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of licensed drivers age 15 to 19"
+  ),
+  list(
+    Name = "Drv20to29",
+    Summarize = list(
+      Expr = "sum(Drv20to29)",
+      Units = c(
+        Drv20to29 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of licensed drivers age 20 to 29"
+  ),
+  list(
+    Name = "Drv30to54",
+    Summarize = list(
+      Expr = "sum(Drv30to54)",
+      Units = c(
+        Drv30to54 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of licensed drivers age 30 to 54"
+  ),
+  list(
+    Name = "Drv55to64",
+    Summarize = list(
+      Expr = "sum(Drv55to64)",
+      Units = c(
+        Drv55to64 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of licensed drivers age 55 to 64"
+  ),
+  list(
+    Name = "Drv65Plus",
+    Summarize = list(
+      Expr = "sum(Drv65Plus)",
+      Units = c(
+        Drv65Plus = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of licensed drivers age 65 and older"
+  ),
+  list(
+    Name = "TotalDrivers",
+    Summarize = list(
+      Expr = "sum(Drivers)",
+      Units = c(
+        Drivers = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of licensed drivers"
+  ),
+
+  #-------
+  #Workers
+  #-------
+  list(
+    Name = "Wkr15to19",
+    Summarize = list(
+      Expr = "sum(Wkr15to19)",
+      Units = c(
+        Wkr15to19 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of workers age 15 to 19"
+  ),
+  list(
+    Name = "Wkr20to29",
+    Summarize = list(
+      Expr = "sum(Wkr20to29)",
+      Units = c(
+        Wkr20to29 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of workers age 20 to 29"
+  ),
+  list(
+    Name = "Wkr30to54",
+    Summarize = list(
+      Expr = "sum(Wkr30to54)",
+      Units = c(
+        Wkr30to54 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of workers age 30 to 54"
+  ),
+  list(
+    Name = "Wkr55to64",
+    Summarize = list(
+      Expr = "sum(Wkr55to64)",
+      Units = c(
+        Wkr55to64 = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of workers age 55 to 64"
+  ),
+  list(
+    Name = "Wkr65Plus",
+    Summarize = list(
+      Expr = "sum(Wkr65Plus)",
+      Units = c(
+        Wkr65Plus = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of workers age 65 and older"
+  ),
+  list(
+    Name = "TotalWorkers",
+    Summarize = list(
+      Expr = "sum(Workers)",
+      Units = c(
+        Workers = "PRSN"
+      ),
+      Table = "Household"
+    ),
+    Units = "persons",
+    Description = "Number of workers"
+  ),
+
+  #---------------------------------------
+  #Average Light-duty Vehicle Fuel Economy
+  #---------------------------------------
+  list(
+    Name = "AverageLdvMpg",
+    Function = "LdvDvmt / (HouseholdGGE + ComSvcGGE + PTVanGGE)",
+    Units = "miles per gallon",
+    Description = "Average fuel economy of light-duty vehicles"
+  ),
+
+  #----------------------------------------------
+  #Average Light-duty Vehicle GHG Emissions Rates
+  #----------------------------------------------
+  #Household daily CO2e
+  list(
+    Name = "HouseholdCO2e",
+    Summarize = list(
+      Expr = "sum(DailyCO2e)",
+      Units = c(
+        DailyCO2e = "GM/DAY"
+      ),
+      Table = "Household"
+    ),
+    Units = "grams per day",
+    Description = "Daily greenhousehouse gas emissions of household vehicles"
+  ),
+  #Commercial Service Vehicle CO2e
+  list(
+    Name = "ComSvcCO2e",
+    Summarize = list(
+      Expr = "sum(ComSvcNonUrbanCO2e) + sum(ComSvcUrbanCO2e)",
+      Units = c(
+        ComSvcNonUrbanCO2e = "GM/DAY",
+        ComSvcUrbanCO2e = "GM/DAY"
+      ),
+      Table = "Marea"
+    ),
+    Units = "grams per day",
+    Description = "Daily greenhousehouse gas emissions of commercial service vehicles"
+  ),
+  #Public Transit Van CO2e
+  list(
+    Name = "PTVanCO2e",
+    Summarize = list(
+      Expr = "sum(VanCO2e)",
+      Units = c(
+        VanCO2e = "GM/DAY"
+      ),
+      Table = "Marea"
+    ),
+    Units = "grams per day",
+    Description = "Daily greenhousehouse gas emissions of public transit vans"
+  ),
+  #Light-duty Vehicle CO2e
+  list(
+    Name = "LdvCO2e",
+    Function = "HouseholdCO2e + ComSvcCO2e + PTVanCO2e",
+    Units = "grams per day",
+    Description = "Daily greenhousehouse gas emissions of light-duty vehicles"
+  ),
+  #HouseholdCO2eRate
+  list(
+    Name = "HouseholdCO2eRate",
+    Function = "HouseholdCO2e / HouseholdDvmt",
+    Units = "grams per mile",
+    Description = "Average greenhousehouse gas emissions rate of household vehicles"
+  ),
+  #ComSvcCO2eRate
+  list(
+    Name = "ComSvcCO2eRate",
+    Function = "ComSvcCO2e / ComSvcDvmt",
+    Units = "grams per mile",
+    Description = "Average greenhousehouse gas emissions rate of commercial service vehicles"
+  ),
+  #PTVanCO2eRate
+  list(
+    Name = "PTVanCO2eRate",
+    Function = "PTVanCO2e / PTVanDvmt",
+    Units = "grams per mile",
+    Description = "Average greenhousehouse gas emissions rate of public transit vans"
+  ),
+  #LdvCO2eRate
+  list(
+    Name = "LdvCO2eRate",
+    Function = "LdvCO2e / LdvDvmt",
+    Units = "grams per mile",
+    Description = "Average greenhousehouse gas emissions rate of light-duty vehicles"
+  )
+)

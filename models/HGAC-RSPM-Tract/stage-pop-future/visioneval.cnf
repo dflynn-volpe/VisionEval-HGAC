@@ -1,0 +1,11 @@
+Notes:
+- Descriptive elements of Future Year stage
+- Clone this future year with different inputs for alternate scenarios
+
+# Scenario description
+ModelScript : run_scenario.R
+Scenario    : HGAC VERSPM Future Year
+Description : Future Year Build (using pre-built population)
+BaseYear    : 2019
+Years       : [ 2045 ]
+StartFrom   : stage-pop-base # Certain values are needed from BaseYear
