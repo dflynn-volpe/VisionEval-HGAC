@@ -20,30 +20,19 @@ Region      : HGAC
 State       : TX
 
 ModelStages : # specify explicitly to avoid processing base scenario
-    "stage-pop-synth":
-  	  ModelScript    : run_popsyn.R
-	    Scenario       : HGAC VERSPM Population
-	    Description    : Pre-build Population for Base (2019) and Future (2045)
-	    BaseYear       : 2045
-	    Years          : [ 2019, 2045 ]
-      Reportable: false
-
     "stage-pop-base":
-  	  ModelScript : run_scenario.R
-	    Scenario    : HGAC VERSPM Base Year
-	    Description : Base Year Build (using pre-built population)
-	    BaseYear    : 2019
-	    Years       : [ 2019 ]
-	    StartFrom   : stage-pop-synth
+      Scenario    : HGAC VERSPM Base Year
+      Description : Base Year Build (using pre-built population)
+      BaseYear    : 2019
+      Years       : [ 2019 ]
       Reportable: true
 
     "stage-pop-future":
-	    ModelScript : run_scenario.R
-	    Scenario    : HGAC VERSPM Future Year
-	    Description : Future Year Build (using pre-built population)
-	    BaseYear    : 2019
-	    Years       : [ 2045 ]
-	    StartFrom   : stage-pop-base # Certain values are needed from BaseYear
+      Scenario    : HGAC VERSPM Future Year
+      Description : Future Year Build (using pre-built population)
+      BaseYear    : 2019
+      Years       : [ 2045 ]
+      StartFrom   : stage-pop-base # Certain values are needed from BaseYear
       Reportable: true
 
 # See "scenarios" subdirectory for scenarios pivoting from "stage-pop-year"

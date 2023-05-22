@@ -1,7 +1,7 @@
 # Try out running HGAC scenarios
 
 taz_scenario_mod <- openModel('HGAC-RSPM-TAZ')
-taz_scenario_mod <- openModel('HGAC-RSPM-TAZ_BaseOnly')
+#taz_scenario_mod <- openModel('HGAC-RSPM-TAZ_BaseOnly')
 
 taz_scenario_mod$results()
 
