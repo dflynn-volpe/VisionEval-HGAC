@@ -1,0 +1,60 @@
+QuerySpec <- list(
+
+  #===========================================================
+  #Metro Measures
+  #===========================================================
+
+  #Urban Population in Marea
+  #------------------------------------
+    
+  ###Fuel Cost
+  #------------------
+  list(
+    Name = "Fuel_Cost_Ma",
+    Summarize=list(
+      Expr = "FuelCost",
+      Units = c(
+        FuelCost = "",
+        Azone = ""
+      ),
+      By = "Azone",
+      Table = "Azone"
+    ),
+    Units = "Dollars",
+    Description = "Fuel cost by Azone"
+  ),
+
+  ###Electricity Cost
+  #------------------
+  list(
+    Name = "Elec_Cost_Ma",
+    Summarize=list(
+      Expr = "PowerCost",
+      Units = c(
+        PowerCost = "",
+        Azone = ""
+      ),
+      By = "Azone",
+      Table = "Azone"
+    ),
+    Units = "Dollars/KH",
+    Description = "Electricity Cost by azone"
+  ),
+
+  ###Federal & State Gas Taxes
+  #------------------
+  list(
+    Name = "Gas_Tax_Ma",
+    Summarize=list(
+      Expr = "FuelTax",
+      Units = c(
+        FuelTax = "",
+        Azone = ""
+      ),
+      By = "Azone",
+      Table = "Azone"
+    ),
+    Units = "dollars",
+    Description = "Fuel taxes by azone"
+  ) 
+)

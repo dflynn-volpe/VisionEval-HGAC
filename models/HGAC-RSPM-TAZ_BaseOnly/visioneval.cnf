@@ -1,0 +1,26 @@
+#Notes:
+#- Model is for TAZ Bzones which have been modified to exclude any zero population TAZ
+#- Model Structural Parameters: ScriptsDir, InputDir, ParamDir, Seed
+#- Model Description: Model, Region, State, ModelStages
+#- See individual ModelStages for scenario descriptions
+
+# Model description
+Model       : VERSPM 3.0
+Region      : HGAC
+State       : TX
+
+BaseYear    : 2019
+
+ModelStages : 
+  "stage-pop-base":
+	Scenario    : HGAC VERSPM Base Year
+	Description : Base Year Build 
+	Years       : [ 2019 ]
+	Reportable  : true
+
+  "stage-pop-future":
+	Scenario    : HGAC VERSPM Future Year
+	Description : Future Year Build 
+	Years       : [ 2045 ]
+	StartFrom   : stage-pop-base # Certain values are needed from BaseYear
+	Reportable  : true
