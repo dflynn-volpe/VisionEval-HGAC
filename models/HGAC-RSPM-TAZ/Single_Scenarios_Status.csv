@@ -1,0 +1,9 @@
+﻿short_name,location,name
+Base Case,C:\Users\Daniel.Flynn\Documents\git\VisionEval-HGAC\models\HGAC-RSPM-TAZ\results\stage-pop-future,VERSPM_base_model
+Storm Damage Population Reduction,C:\Users\Daniel.Flynn\Documents\git\VisionEval-HGAC\models\HGAC-RSPM-TAZ\results\1a,1a
+New Employment Centers ,C:\Users\Daniel.Flynn\Documents\git\VisionEval-HGAC\models\HGAC-RSPM-TAZ\results\1b,1b
+Simultaneous Household + Employment Change,C:\Users\Daniel.Flynn\Documents\git\VisionEval-HGAC\models\HGAC-RSPM-TAZ\results\1c,1c
+Lower Population Growth than Forecast,C:\Users\Daniel.Flynn\Documents\git\VisionEval-HGAC\models\HGAC-RSPM-TAZ\results\2a,2a
+Select Employment Center Growth,C:\Users\Daniel.Flynn\Documents\git\VisionEval-HGAC\models\HGAC-RSPM-TAZ\results\2b,2b
+Simultaneous Lower Population Growth + Employment Center Growth,C:\Users\Daniel.Flynn\Documents\git\VisionEval-HGAC\models\HGAC-RSPM-TAZ\results\2c,2c
+Increased Telecommuting,C:\Users\Daniel.Flynn\Documents\git\VisionEval-HGAC\models\HGAC-RSPM-TAZ\results\3,3

@@ -1,9 +1,0 @@
-Notes:
-- Descriptive elements of population synthesis stage
-
-# Scenario description
-ModelScript    : run_popsyn.R
-Scenario       : HGAC VERSPM Population
-Description    : Pre-build Population for Base (2019) and Future (2045)
-BaseYear       : 2045
-Years          : [ 2019, 2045 ]

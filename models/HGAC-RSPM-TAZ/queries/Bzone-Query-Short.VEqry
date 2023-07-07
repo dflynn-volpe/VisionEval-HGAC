@@ -1,0 +1,74 @@
+# Define a single object (list), not nessarily named PMSpecifications
+# that contains a series of lists that are specifications
+
+# This file contains an extensive list of example measures. You can make
+# new measures by copying and editing any of the existing ones. Be careful
+# to give each Measure a unique name.
+
+# Here's what a Specification consists of:
+# It's a list with named elements, developed from the following list:
+#
+# REQUIRED:
+# "Name" - the name for the measure in the spreadsheet.
+#          Be careful to give each measure a unique name.
+# "Units" - the OUTPUT Units in which the measure is expressed (can be converted/derived)
+# "Description" - the description of this measure (what it intends to do...)
+#    In the examples below, Units and Description come at the end. It doesn't
+#    matter what order they are in, as long as they are at the right "list level"
+#    i.e. there's also a "Units" in the Summarize spec, which are the INPUT units
+#
+# EXACTLY ONE OF
+# EITHER
+#    "Function" - a string containing an R expression working on measures that were
+#    previously specified.
+# OR
+#    "Summarize" - a list that specifies a call to summarizeDatasets; see below.
+#
+# The Summarize specification is a list with these named elements (see the docs
+# for summarizeDatastore for more information
+#
+#  REQUIRED:
+#    "Expr" - the summarizeDatasets expressiom (q.v.)
+#    "Units" - for each Dataset name referred to in Expr or By, the (possibly converted)
+#           units of the corresponding dataset.
+#    "By" - a vector of Datasets along which to break out the Measure. Usually just "Marea".
+#           If doing Breaks, a vector of two, with the first one being the sub-breaks (e.g.
+#           Income).
+#    "Table" - a vector of one or more tables that will be joined; If Table has more than one
+#           entry, you must specify "Key" to say how they are joined.
+#  OPTIONAL
+#    "Breaks" - used to turn a numeric Dataset (field) into categories
+#    "BreakNames" (must also have "Breaks", otherwise ignored) - Nice names to append to the
+#           MeasureName for the categories
+#    "Key" (if Table contains more than one Table) - the Dataset or field in all listed Tables
+#           that will be used to join them.
+#
+# There are examples of all of these below
+#
+# Note that VEReports::summarizeDatasets has additional parameters (e.g. Group and QueryPrep_ls) that are
+# automatically supplied by the script. You can put them here, but they will be ignored.
+
+# It doesn't matter what name you use for the variable you put the list in, so long as this file
+# contains exactly one such object definition.
+# So it could also be something like "MyMareaSpecifications <- list("
+
+QuerySpec <- list(
+
+  #### DVMT
+  # Household DVMT
+  #--------------------
+  list(
+    Name = "HhDvmt",
+    Summarize = list(
+      Expr = "",
+      Units = c(
+        Dvmt = "MI/DAY",
+        Marea = ""
+      ),
+      By = "Bzone",
+      Table = "Household"
+    ),
+    Units = "Miles per day",
+    Description = "Daily vehicle miles traveled by households residing in the urban area"
+  )
+)
