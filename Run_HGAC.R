@@ -1,11 +1,12 @@
 # Try out running HGAC scenarios
-library(tidyverse)
+library(tidyverse) # install.packages('tidyverse')
 
 taz_scenario_mod <- openModel('HGAC-RSPM-TAZ')
-#taz_scenario_mod <- openModel('HGAC-RSPM-TAZ_BaseOnly')
 
 taz_scenario_mod$results()
 
+
+# This step can take several hours -- only run when ready!
 start_time <- Sys.time()
 
 taz_scenario_mod$run()
@@ -14,9 +15,8 @@ end_time <- Sys.time() - start_time
 print(paste(round(end_time, 2), attr(end_time, 'units'), 'to complete H-GAC taz-level scenarios'))
 
 ## Extract HGAC results
-
+# Start here to extract completed results
 taz_scenario_mod <- openModel('HGAC-RSPM-TAZ')
-
 
 print(taz_scenario_mod$query())
 
@@ -27,33 +27,14 @@ qry$run() # do the query on mod.scenarios model
 
 qry$export()
 
-
-qry <- taz_scenario_mod$query("Bzone-Query") # open the query
-qry$run() # do the query on mod.scenarios model
-
-qry$export()
-
-
-qry <- taz_scenario_mod$query("Bzone-Query-Short") # open the query
-qry$run() # do the query on mod.scenarios model
-
-qry$export()
-
 # Manual extract for Bzones
-
-# source('~/git/VE-Tools/Model Run/Extract_Single_Scenarios.R')
-
 results <- taz_scenario_mod$results()
 
 print(results)
 
-full_ext <- results$extract()
-
+# This step outputs *All* tables from the results to .csv files
+# This is a long process and will generate several Gb of outputs!
 results$extract(saveResults=TRUE)   # if not saveResults, return a list of data.frames, invisibly
-
-
-results$extract(saveResults=TRUE, stage = '1a')
-results$extract(saveResults=TRUE, stage = '1c')
 
 # Manually then deleted Vehicle and Worker files, which are very large, and delted 2019 outputs from various scenarios
 
@@ -118,3 +99,19 @@ for(scen in scenarios){
 }
 
 write_csv(compiled, file.path(taz_scenario_mod$modelResults, 'Compiled_Household_Metrics_Bzone.csv'))
+
+# Query version ----
+# To fix -- these don't work currently
+
+# 
+# 
+# qry <- taz_scenario_mod$query("Bzone-Query") # open the query
+# qry$run() # do the query on mod.scenarios model
+# 
+# qry$export()
+# 
+# 
+# qry <- taz_scenario_mod$query("Bzone-Query-Short") # open the query
+# qry$run() # do the query on mod.scenarios model
+# 
+# qry$export()
