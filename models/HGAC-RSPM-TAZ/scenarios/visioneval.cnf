@@ -2,6 +2,7 @@ Notes:
   - Tract scenarios for HGAC
   - Settings ahead of ModelStages apply to all stages
 
+# Keep this: Sharon removed 'StartFrom: "stage-pop-base"' line, caused issues. Do not delete 'StartFrom'
 StartFrom    : "stage-pop-base"
 BaseScenario : "stage-pop-future"
 
