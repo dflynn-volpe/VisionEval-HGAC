@@ -1,11 +1,14 @@
+# Script to prepare inputs for HGAC VERSPM VisionEval model
+# This prepares inputs for Scenario 1a, where the number of dwelling units is altered to reflect changes in available housing on Galveston Island.
+
 input <- read.csv('bzone_dwelling_units_2045.csv')
 increase_file <- read.csv('Bzone1aGalReloTAZs.csv')
 decrease_file <- read.csv('GalvestonIsland1aDwellingUnits.csv')
 taz_groupings <- read.csv('TOE_TAZ-BZONE.csv')
-decrease_factor=.2
+decrease_factor= 0.2
 
-increase_list<-increase_file$NewTAZ_ID
-decrease_list<-decrease_file$NewTAZ_ID
+increase_list <- increase_file$NewTAZ_ID
+decrease_list <- decrease_file$NewTAZ_ID
 
 # identify Bzones in which to decrease dwelling units
 # apply decrease factor to determine total change in Bzones with decrease dwelling units
@@ -13,9 +16,9 @@ decrease_list<-decrease_file$NewTAZ_ID
 decrease_rows <- input$Geo %in% decrease_list
 changes <- lapply(input[decrease_rows,c("SFDU","MFDU","GQDU")],function(x) decrease_factor*sum(x))
 
-total_change_sf=changes$SFDU
-total_change_mf=changes$MFDU
-total_change_gq=changes$GQDU
+total_change_sf = changes$SFDU
+total_change_mf = changes$MFDU
+total_change_gq = changes$GQDU
 
 increase_rows <- input$Geo %in% increase_list
 initial <- lapply(input[increase_rows,c("SFDU","MFDU","GQDU")],sum)
@@ -25,9 +28,11 @@ increase_factor <- mapply(function(change,initial) change/initial, changes, init
 increase_factor[increase_factor == Inf] = 0 # Replace any Inf with zero in the increase factor
 # increase_factor is then a list with elements c("SFDU","MFDU","GQDU") each of which is the corresponding factor
 increase_factor <- as.data.frame(t(increase_factor))
-# Changing dwelling units in increase_rows and decrease_rows lists
+
+# Changing dwelling units in increase_rows and decrease_rows vectors
 print(increase_factor)
 print(input)
+
 input$SFDU[increase_rows] <- (1-increase_factor$SFDU)*input$SFDU[increase_rows]
 input$MFDU[increase_rows] <- (1-increase_factor$MFDU)*input$MFDU[increase_rows]
 input$GQDU[increase_rows] <- (1-increase_factor$GQDU)*input$GQDU[increase_rows]
@@ -55,4 +60,5 @@ print(final)
 # We don't need to do that if we're just writing it to .csv (as.character is the default column processing)
 
 #exports final output to csv file
-write.csv(final, "1a_bzone_dwelling_units.csv", row.names=FALSE)
+if(!dir.exists('1a')) { dir.create('1a') }
+write.csv(final, "1a/bzone_dwelling_units.csv", row.names=FALSE)
