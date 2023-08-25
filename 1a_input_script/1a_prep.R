@@ -2,7 +2,8 @@
 # This prepares inputs for Scenario 1a, where the number of dwelling units is altered to reflect changes in available housing on Galveston Island.
 
 input <- read.csv('bzone_dwelling_units_2045.csv')
-increase_file <- read.csv('Bzone1aGalReloTAZs.csv')
+base <- read.csv('../models/HGAC-RSPM-TAZ/inputs/bzone_dwelling_units.csv')
+base <- base[base$Year==2019,]
 decrease_file <- read.csv('GalvestonIsland1aDwellingUnits.csv')
 taz_groupings <- read.csv('TOE_TAZ-BZONE.csv')
 decrease_factor= 0.2
@@ -30,8 +31,6 @@ increase_factor[increase_factor == Inf] = 0 # Replace any Inf with zero in the i
 increase_factor <- as.data.frame(t(increase_factor))
 
 # Changing dwelling units in increase_rows and decrease_rows vectors
-print(increase_factor)
-print(input)
 
 input$SFDU[increase_rows] <- (1-increase_factor$SFDU)*input$SFDU[increase_rows]
 input$MFDU[increase_rows] <- (1-increase_factor$MFDU)*input$MFDU[increase_rows]
@@ -44,16 +43,21 @@ input$GQDU[decrease_rows] <- (1-decrease_factor)*input$GQDU[decrease_rows]
 input$Bzone <- taz_groupings$Bzone
 
 #aggregates input into dataframe
-final <- aggregate(input[,c("SFDU","MFDU","GQDU")],by=list(Geo=taz_groupings$Bzone),sum)
+final <- aggregate(input[,c("Year","SFDU","MFDU","GQDU")],by=list(Geo=taz_groupings$Bzone),sum)
 
 #Adding 3 sfdu to rows with 0 units
-zero_rows <- input[sum(input$SFDU+input$MFDU+input$GQDU)==0]$Bzone
-final$SFDU[zero_rows] <- 3
+final$SFDU[final$SFDU==0 & final$MFDU==0 & final$GQDU==0] <- 3
+
+setdiff(final$Geo, base$Geo)
+setdiff(base$Geo, final$Geo)
+
+#adds 2019 rows
+final <- rbind(base[base$Year==2019,],final)
 
 #prints output: run to view dataframe before exporting
 print(final)
 
-#   NOTE: final will have columns c("Geo","SFDU","MFDU","GQDU"), and the "Geo" rows will be Bzones...
+#   NOTE: final will have columns c("Geo","Year","SFDU","MFDU","GQDU"), and the "Geo" rows will be Bzones...
 
 # NOTE: final$Geo is now an R factor, but we can change it back like this
 #   final$Geo <- as.character(final$Geo)
