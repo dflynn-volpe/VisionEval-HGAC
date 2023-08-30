@@ -4,7 +4,7 @@
 input <- read.csv('bzone_dwelling_units_2045.csv')
 base <- read.csv('../models/HGAC-RSPM-TAZ/inputs/bzone_dwelling_units.csv')
 base <- base[base$Year==2019,]
-increase_file <- read.csv('GalReloBzones2045.csv')
+increase_file <- read.csv('Bzone1aGalReloTAZs.csv')
 decrease_file <- read.csv('GalvestonIsland1aDwellingUnits.csv')
 taz_groupings <- read.csv('TOE_TAZ-BZONE.csv')
 decrease_factor= 0.2
