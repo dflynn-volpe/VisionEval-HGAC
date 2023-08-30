@@ -9,6 +9,7 @@ change_file <- read.csv('bzone-employment_new_ctrs.csv')
 
 sugarland_list <- change_file[change_file$Emp_Ctr=='Sugar Land',]$NewTAZ_ID_
 rosenberg_list <- change_file[change_file$Emp_Ctr=='Rosenberg',]$NewTAZ_ID_
+conroe_list <- change_file[change_file$Emp_Ctr=='Conroe',]$NewTAZ_ID_
 
 # Changing employment data 
 
