@@ -49,11 +49,16 @@ final <- aggregate(input[,c("Year","SFDU","MFDU","GQDU")],by=list(Geo=taz_groupi
 #Adding 3 sfdu to rows with 0 units
 final$SFDU[final$SFDU==0 & final$MFDU==0 & final$GQDU==0] <- 3
 
-setdiff(final$Geo, base$Geo)
-setdiff(base$Geo, final$Geo)
 
 #adds 2019 rows
 final <- rbind(base[base$Year==2019,],final)
+
+#deleting 3 excess bzones
+final <- final[!(final$Geo %in% c(4911, 5151, 5168)),]
+
+#checks dimensions
+setdiff(final$Geo, base$Geo)
+setdiff(base$Geo, final$Geo)
 
 #prints output: run to view dataframe before exporting
 print(final)
