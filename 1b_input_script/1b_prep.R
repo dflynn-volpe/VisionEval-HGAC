@@ -1,10 +1,10 @@
 # Script to prepare inputs for HGAC VERSPM VisionEval model
 # This prepares inputs for Scenario 1b, where data is altered to reflect increased employment in Conroe, Sugar Land, and Rosenberg
 
-input <- read.csv('bzone_employment.csv')
+input <- read.csv('./1b_input_script/bzone_employment.csv')
 base <- input[input$Year==2019,]
 input <- input[input$Year==2045,]
-change_file <- read.csv('bzone-employment_new_ctrs.csv')
+change_file <- read.csv('./1b_input_script/bzone-employment_new_ctrs.csv')
 #taz_groupings <- read.csv('TOE_TAZ-BZONE.csv')
 
 sugarland_list <- change_file[change_file$Emp_Ctr=='Sugar Land',]$NewTAZ_ID_
@@ -46,5 +46,5 @@ print(final)
 # We don't need to do that if we're just writing it to .csv (as.character is the default column processing)
 
 #exports final output to csv file
-if(!dir.exists('1b')) { dir.create('1b') }
-write.csv(final, "1b/bzone_employment.csv", row.names=FALSE)
+if(!dir.exists('completed inputs/1b')) { dir.create('completed inputs/1b') }
+write.csv(final, "completed inputs/1b/bzone_employment.csv", row.names=FALSE)

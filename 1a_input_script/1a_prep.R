@@ -71,5 +71,5 @@ print(final)
 # We don't need to do that if we're just writing it to .csv (as.character is the default column processing)
 
 #exports final output to csv file
-if(!dir.exists('completed inputs')) { dir.create('completed inputs') }
-write.csv(final, "completed inputs/bzone_dwelling_units.csv", row.names=FALSE)
+if(!dir.exists('completed inputs/1a')) { dir.create('completed inputs/1a') }
+write.csv(final, "completed inputs/1a/bzone_dwelling_units.csv", row.names=FALSE)
